@@ -1,5 +1,5 @@
 "use client";
-import { ElementRef, useEffect, useRef, useState } from "react";
+import { ElementRef, useCallback, useEffect, useRef, useState } from "react";
 import { ChevronsLeft, MenuIcon, Plus, PlusCircleIcon, Search, Settings, Trash } from "lucide-react";
 import { useMediaQuery } from "usehooks-ts";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -32,14 +32,6 @@ export const Navigation = () => {
   const navbarRef = useRef<ElementRef<"div">>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
-
-  useEffect(() => {
-    if (isMobile) {
-      collapse();
-    } else {
-      resetWidth();
-    }
-  }, [isMobile]);
 
   useEffect(() => {
     if (isMobile) {
@@ -81,7 +73,7 @@ export const Navigation = () => {
     document.removeEventListener("mouseup", handleMouseUp);
   };
 
-  const resetWidth = () => {
+  const resetWidth =useCallback(() => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(false);
       setIsResetting(true);
@@ -95,7 +87,7 @@ export const Navigation = () => {
       navbarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
       setTimeout(() => setIsResetting(false), 300);
     }
-  };
+  },[isMobile]) ;
 
   const collapse = () => {
     if (sidebarRef.current && navbarRef.current) {
@@ -118,6 +110,14 @@ export const Navigation = () => {
       error:"Failed to create a new note."
     })
   }
+
+  useEffect(() => {
+    if (isMobile) {
+      collapse();
+    } else {
+      resetWidth();
+    }
+  }, [isMobile,resetWidth]);
 
   return (
     <>

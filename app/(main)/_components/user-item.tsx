@@ -6,7 +6,6 @@ import {
     DropdownMenu,
     DropdownMenuItem,
     DropdownMenuContent,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
